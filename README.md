@@ -4,7 +4,7 @@
 (chrono effectif, tours, accélérations ratées, arrêts interdits, pauses de 20 s), la fiche part chez le professeur,
 qui retrouve fiches et proposition de note.
 
-Notice : `public/Notice-Fartlek-Pro.pdf` (aussi accessible dans l'appli, icône livre).
+Notice : `Guide-utilisation-Fartlek-Pro.pdf` (copie dans `public/Notice-Fartlek-Pro.pdf`) (aussi accessible dans l'appli, icône livre).
 Journal des modifications : `CHANGELOG.txt` (et dans l'appli, en touchant le numéro de version).
 
 ## Pile technique
