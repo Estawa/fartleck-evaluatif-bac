@@ -1,23 +1,44 @@
-# Fartleck Évaluatif Bac
+# Fartlek Pro by C. Guilhem
 
-Application web progressive mobile-first pour le suivi d'une évaluation de fartleck en EPS.
+Évaluation du **fartlek** en EPS (Bac GT et Bac Pro) : un élève court, son camarade l'observe sur son téléphone
+(chrono effectif, tours, accélérations ratées, arrêts interdits, pauses de 20 s), la fiche part chez le professeur,
+qui retrouve fiches et proposition de note.
 
-## Mise en ligne avec GitHub Pages
-1. Décompresser l'archive.
-2. Ouvrir le dépôt GitHub `Estawa/fartleck-evaluatif-bac`.
-3. Choisir **Add file > Upload files**.
-4. Envoyer tous les fichiers et le dossier éventuel à la racine du dépôt.
-5. Valider avec **Commit changes**.
-6. Dans **Settings > Pages**, sélectionner **Deploy from a branch**, branche `main`, dossier `/ (root)`, puis enregistrer.
+Notice : `public/Notice-Fartlek-Pro.pdf` (aussi accessible dans l'appli, icône livre).
+Journal des modifications : `CHANGELOG.txt` (et dans l'appli, en touchant le numéro de version).
 
-## Utilisation
-Renseigner le coureur, l'observateur, la classe, le niveau et la date. Démarrer le chrono, utiliser les compteurs et la pause de récupération de 20 secondes, terminer la course, puis enregistrer ou imprimer la fiche. Les fiches peuvent être exportées au format CSV.
+## Pile technique
+React + Vite + Tailwind + lucide-react, PWA (vite-plugin-pwa), Firestore.
 
-## Règles intégrées
-- N1 : 20 minutes ; N2 : 22 minutes ; N3 : 25 minutes.
-- Tour de 400 m : 50 m d'accélération, 150 m de récupération, 50 m d'accélération, 150 m de récupération.
-- Zone autorisée de récupération : 20 secondes maximum. Le chrono effectif est suspendu pendant cette pause.
-- Les arrêts ou la marche hors de la zone sont comptabilisés comme interdits.
+## Mise en ligne (Vercel)
+1. Vercel > **Add New > Project** > importer le dépôt `Estawa/fartleck-evaluatif-bac`.
+2. Framework : **Vite** (détecté tout seul). Build : `npm run build`, dossier de sortie : `dist`.
+3. Chaque envoi sur GitHub redéploie l'appli ; les téléphones se mettent à jour à l'ouverture suivante.
+4. L'ancienne publication GitHub Pages (version ChatGPT) peut être désactivée : Settings > Pages > None.
 
-## Limites importantes
-Ceci est une première version locale. Les fiches sont conservées dans le navigateur de l'appareil, sans envoi automatique à un espace enseignant. Exporter régulièrement le CSV. Les données peuvent être perdues si les données du navigateur sont supprimées ou si l'appareil est changé. La distance finale est saisie manuellement. L'impression PDF est déclenchée depuis le navigateur.
+## Firebase (projet « Running » = vma-pro-seances)
+Pas de nouveau projet : l'appli range ses données à part, sous `flp_acces` et `flp_profs`.
+**À ajouter une fois** dans la console Firebase > Firestore > Règles, à l'intérieur de `match /databases/{database}/documents { … }`,
+à côté des règles déjà présentes pour les autres applis :
+
+```
+match /flp_acces/{document=**} { allow read, write: if true; }
+match /flp_profs/{document=**} { allow read, write: if true; }
+```
+
+Sans ces règles, un bandeau rouge l'indique dans l'appli et les données restent sur l'appareil.
+
+Structure :
+- `flp_acces/config` : administrateur et collègues (nom, code)
+- `flp_profs/{prof}/meta/roster` : classes et élèves ; `meta/types` : Bac GT / Bac Pro par classe ; `meta/reglages` : protocole et barème
+- `flp_profs/{prof}/pins/{élève}` : code PIN personnel
+- `flp_profs/{prof}/fiches/{fiche}` : fiches d'observation
+- `flp_profs/{prof}/notes/{classe}` : saisies de notes
+
+Code administrateur au premier lancement : 8484 (à changer dans l'onglet Accès).
+
+## Code
+- `src/components/Observation.jsx` : préparation, course, distance, bilan, envoi
+- `src/utils/bareme.js` : barème provisoire de la performance ; `src/utils/bacGrilles.js` : grilles Bac GT / Bac Pro
+- `src/utils/cloud.js` : Firestore + file d'envoi hors réseau
+- `docs/guide.md` + `docs/generer_guide.py` : source de la notice PDF (`python3 docs/generer_guide.py docs/guide.md public/Notice-Fartlek-Pro.pdf`)

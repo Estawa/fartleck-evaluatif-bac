@@ -1,42 +1,22 @@
 <!doctype html>
 <html lang="fr">
-<head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#102a43"><meta name="description" content="Suivi des évaluations de fartleck en EPS">
-<link rel="manifest" href="./manifest.webmanifest"><link rel="icon" href="./icon.svg"><link rel="stylesheet" href="./style.css">
-<title>Fartleck Évaluatif Bac</title>
-</head>
-<body>
-<header><div class="logo">F</div><div><b>Fartleck Évaluatif Bac</b><small>Suivi de course · EPS</small></div><button id="install" hidden>Installer</button></header>
-<main>
-<section class="intro"><p>ÉVALUATION EPS</p><h1>Suivi de course</h1><span>Un élève court, son observateur renseigne les indicateurs.</span></section>
-<section class="card"><h2>1. Fiche du coureur</h2><div class="grid">
-<label>Nom du coureur<input id="runner" placeholder="Nom et prénom"></label><label>Classe<input id="class" placeholder="Ex. 1re 3"></label>
-<label>Observateur<input id="observer" placeholder="Nom et prénom"></label><label>Niveau<select id="level"><option>N1 · 20 minutes</option><option>N2 · 22 minutes</option><option>N3 · 25 minutes</option></select></label>
-<label>Date<input id="date" type="date"></label><label>Distance finale (m)<input id="distance" type="number" min="0" step="10" placeholder="À l'arrivée"></label>
-</div><p class="hint">Piste de 400 m : 50 m accélération / 150 m récupération / 50 m accélération / 150 m récupération.</p></section>
-<section class="card timer"><div class="line"><h2>2. Chronométrage</h2><span id="status">Prêt</span></div>
-<div id="clock">00:00</div><p class="hint center">Temps effectif · hors récupérations autorisées</p>
-<div class="actions"><button class="primary" id="start">Démarrer</button><button class="dark" id="finish" disabled>Terminer</button></div>
-<div class="stats">
-<div><small>Tours</small><b id="laps">0</b><button data-k="laps" data-d="-1">−</button><button data-k="laps" data-d="1">+</button></div>
-<div><small>Accélérations invalidées</small><b id="invalid">0</b><button data-k="invalid" data-d="-1">−</button><button data-k="invalid" data-d="1">+</button></div>
-<div><small>Arrêts / marche interdits</small><b id="forbidden">0</b><button data-k="forbidden" data-d="-1">−</button><button data-k="forbidden" data-d="1">+</button></div>
-<div><small>Récupérations autorisées</small><b id="allowed">0</b><button data-k="allowed" data-d="-1">−</button><button data-k="allowed" data-d="1">+</button></div>
-</div>
-<div class="recovery"><div><b>Zone de récupération</b><small>Chronomètre en pause · 20 secondes maximum</small></div><strong id="recClock">20 s</strong><button id="recovery" disabled>Débuter la récupération</button><p id="recMessage">Une pause de plus de 20 secondes ajoute un arrêt interdit.</p></div>
-</section>
-<section class="card"><h2>3. Bilan de l'observation</h2><div class="grid"><label>Heure de départ<input id="startTime" type="time"></label><label>Heure d'arrivée<input id="endTime" type="time"></label></div>
-<label>Observations libres<textarea id="notes" rows="3" placeholder="Remarques…"></textarea></label>
-<p id="summary" class="summary">Course non terminée.</p><div class="actions wrap"><button class="primary" id="save" disabled>Enregistrer la fiche</button><button id="print" disabled>Imprimer / PDF</button></div></section>
-<section class="card"><h2>Rappel du protocole</h2><ul>
-<li>N1 : 20 min · N2 : 22 min · N3 : 25 min.</li>
-<li>Sur chaque tour de 400 m : accélération visible sur les deux zones de 50 m ; récupération en trottinant sur les deux zones de 150 m.</li>
-<li>La zone de récupération / hydratation est limitée à 20 secondes. Le chronomètre est suspendu pendant cette pause.</li>
-<li>Marcher ou s'arrêter ailleurs sur la piste est interdit et doit être signalé.</li>
-<li>L'observateur relève les tours, accélérations invalidées, arrêts interdits, récupérations autorisées et distance finale exacte.</li>
-<li>Les rôles sont ensuite inversés selon l'organisation de l'enseignant.</li>
-</ul><p class="hint">Version initiale : les fiches sont conservées sur cet appareil. Pas encore de transmission automatique vers un espace enseignant.</p></section>
-<section class="card"><div class="line"><h2>Fiches enregistrées</h2><small id="count">0 fiche</small></div><div id="records">Aucune fiche enregistrée.</div><div class="actions wrap"><button id="csv">Exporter CSV</button><button class="danger" id="clear">Effacer les fiches</button></div></section>
-</main><footer>Fartleck Évaluatif Bac · Version initiale · Stockage local</footer>
-<script src="./app.js"></script></body></html>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#0F2E4C" />
+    <title>Fartlek Pro by C. Guilhem</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+      try { if (localStorage.getItem('flp_theme') === 'nuit') document.documentElement.classList.add('dark') } catch (e) {}
+    </script>
+    <!-- mise à jour + partage de l'appli (QR code, WhatsApp) -->
+    <script src="/maj-partage.js" defer></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
